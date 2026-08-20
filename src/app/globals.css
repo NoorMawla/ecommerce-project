@@ -1,26 +1,179 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-bg: #faf7f4;
+  --color-surface: #ffffff;
+  --color-surface-2: #f9f6f2;
+  --color-surface-3: #efe8e1;
+  --color-line: #e3d9ce;
+  --color-ink: #2c2c2c;
+  --color-ink-soft: #6b6b6b;
+  --color-ink-faint: #999999;
+  --color-accent: #b8956a;
+  --color-accent-light: #d4b896;
+  --color-accent-ink: #2c2c2c;
+  --color-warn: #d4a574;
+  --color-danger: #c94a4a;
+
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui;
+
+  --radius-card: 16px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    background-color: var(--color-bg);
+    color-scheme: light;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: 0.3px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.card:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 20px 40px rgba(184, 149, 106, 0.15), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
+}
+
+@utility card-hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 20px 40px rgba(184, 149, 106, 0.15), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
+}
+
+@utility grid-glow {
+  background-image:
+    radial-gradient(60% 50% at 50% 0%, color-mix(in oklab, var(--color-accent) 6%, transparent), transparent 70%),
+    linear-gradient(to bottom, var(--color-surface), var(--color-bg));
+}
+
+@utility field {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background-color: var(--color-surface);
+  border: 1.5px solid var(--color-line);
+  color: var(--color-ink);
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  font-size: 0.95rem;
+}
+
+.field:hover{
+  border-color: var(--color-accent-light);
+  background-color: var(--color-surface-2);
+  box-shadow: 0 2px 8px rgba(184, 149, 106, 0.08);
+}
+
+.field:focus {
+  border-color: var(--color-accent);
+  background-color: var(--color-surface);
+  box-shadow: 0 4px 12px rgba(184, 149, 106, 0.12);
+}
+
+@utility field-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@utility smooth-fade {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@utility slide-up {
+  animation: slideUp 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+@utility shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 0%,
+    var(--color-surface-2) 50%,
+    var(--color-surface) 100%
+  );
+  background-size: 1000px 100%;
+}
+
+@layer base {
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+}
+
+@utility float-hover {
+  animation: float 3s ease-in-out infinite;
 }
