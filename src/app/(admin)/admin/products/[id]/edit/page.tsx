@@ -102,6 +102,7 @@ export default async function EditProductPage({
             required
             className="w-full rounded border px-3 py-2"
           >
+            <option value="">Select a category</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}

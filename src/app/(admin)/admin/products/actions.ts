@@ -82,6 +82,7 @@ export async function updateProduct(id: string, formData: FormData) {
     throw new Error("Invalid stock");
   }
 
+<<<<<<< HEAD
   const existing = await prisma.product.findUnique({ where: { id } });
   if (!existing) {
     throw new Error("Product not found");
@@ -102,11 +103,16 @@ export async function updateProduct(id: string, formData: FormData) {
     slug = collision ? `${baseSlug}-${id.slice(0, 6)}` : baseSlug;
   }
 
+=======
+>>>>>>> origin/frontend-shop
   await prisma.product.update({
     where: { id },
     data: {
       name,
+<<<<<<< HEAD
       slug,
+=======
+>>>>>>> origin/frontend-shop
       description,
       price: Math.round(price * 100), // convert dollars to cents
       stock,
@@ -116,6 +122,9 @@ export async function updateProduct(id: string, formData: FormData) {
   });
 
   revalidatePath("/admin/products");
+<<<<<<< HEAD
   revalidatePath(`/products/${slug}`);
+=======
+>>>>>>> origin/frontend-shop
   redirect("/admin/products");
 }

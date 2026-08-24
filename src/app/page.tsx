@@ -49,14 +49,19 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="relative hidden min-h-[360px] lg:block">
-            <div className="absolute right-0 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-accent/10 blur-3xl" />
+          <div className="relative hidden min-h-[420px] lg:block">
+            <div className="absolute right-0 top-1/2 h-80 w-80 -translate-y-1/2 rounded-full bg-accent/10 blur-3xl" />
 
             <div className="relative flex h-full items-center justify-center">
-              <div className="rounded-3xl border border-line bg-surface-2 p-8 shadow-2xl">
-                <div className="flex h-56 w-56 items-center justify-center rounded-2xl border border-line bg-bg">
-                  <Headphones className="h-28 w-28 text-accent" />
-                </div>
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl border border-line shadow-2xl">
+                <Image
+                  src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop"
+                  alt="Wireless headphones and everyday tech accessories"
+                  fill
+                  sizes="(min-width: 1024px) 45vw, 100vw"
+                  className="object-cover"
+                  priority
+                />
               </div>
             </div>
           </div>
@@ -182,11 +187,12 @@ export default async function HomePage() {
                 className="card group overflow-hidden"
               >
                 <div className="relative aspect-square overflow-hidden bg-surface-2">
-                  {product.image ? (
+                  {product.imageUrl ? (
                     <Image
-                      src={product.image}
+                      src={product.imageUrl}
                       alt={product.name}
                       fill
+                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   ) : (
