@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/components/cart/CartProvider";
@@ -13,7 +13,7 @@ import {
   type CheckoutErrors,
   type CheckoutInput,
 } from "@/lib/validation/checkout";
-import { placeOrder } from "@/app/checkout/actions";
+import { PaymentStep } from "@/components/checkout/PaymentStep";
 
 const EMPTY: CheckoutInput = {
   fullName: "",
@@ -33,8 +33,6 @@ export function CheckoutForm() {
   const [step, setStep] = useState<"details" | "review">("details");
   const [values, setValues] = useState<CheckoutInput>(EMPTY);
   const [errors, setErrors] = useState<CheckoutErrors>({});
-  const [serverError, setServerError] = useState<string | null>(null);
-  const [pending, startTransition] = useTransition();
 
   if (ready && items.length === 0) {
     return (
@@ -58,21 +56,9 @@ export function CheckoutForm() {
     if (Object.keys(found).length === 0) setStep("review");
   }
 
-  function confirm() {
-    setServerError(null);
-    startTransition(async () => {
-      const result = await placeOrder({
-        shipping: values,
-        items: items.map((i) => ({ productId: i.productId, quantity: i.quantity })),
-      });
-
-      if (!result.ok) {
-        setServerError(result.error);
-        return;
-      }
-      clear();
-      router.push(`/orders/${result.orderNumber}`);
-    });
+  function onPlaced(orderNumber: string) {
+    clear();
+    router.push(`/orders/${orderNumber}`);
   }
 
   return (
@@ -221,19 +207,14 @@ export function CheckoutForm() {
               </ul>
             </section>
 
-            {serverError ? (
-              <p role="alert" className="text-sm text-danger">
-                {serverError}
-              </p>
-            ) : null}
-
-            <Button className="w-full" disabled={pending} onClick={confirm}>
-              {pending ? "Placing order…" : "Confirm and pay"}
-            </Button>
-            <p className="text-xs text-ink-faint">
-              Totals are recalculated on the server from database prices before
-              the order is created.
-            </p>
+            <PaymentStep
+              shipping={values}
+              cartLines={items.map((i) => ({
+                productId: i.productId,
+                quantity: i.quantity,
+              }))}
+              onPlaced={onPlaced}
+            />
           </div>
         )}
       </div>
