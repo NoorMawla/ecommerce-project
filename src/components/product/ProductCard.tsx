@@ -21,14 +21,22 @@ export function ProductCard({ product }: { product: ProductCardData }) {
         href={`/products/${product.slug}`}
         className="relative block aspect-square overflow-hidden bg-surface-2"
       >
-        <Image
-          src={product.imageUrl}
-          alt={product.name}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
-          priority={false}
-        />
+        {product.imageUrl && product.imageUrl.trim() !== "" ? (
+  <Image
+    src={product.imageUrl}
+    alt={product.name}
+    fill
+    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+    className="object-cover transition-transform duration-500 group-hover:scale-105"
+  />
+) : (
+  <div className="flex h-full items-center justify-center bg-surface-2">
+    <div className="text-center">
+      <div className="text-3xl mb-2">📦</div>
+      <p className="text-sm text-ink-faint">No image</p>
+    </div>
+  </div>
+)}
         {product.stock <= 0 ? (
           <span className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
             <span className="rounded-full bg-danger px-4 py-2 text-sm font-semibold text-white">

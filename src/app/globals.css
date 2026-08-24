@@ -1,24 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #faf7f4;
-  --color-surface: #ffffff;
-  --color-surface-2: #f9f6f2;
-  --color-surface-3: #efe8e1;
-  --color-line: #e3d9ce;
-  --color-ink: #2c2c2c;
-  --color-ink-soft: #6b6b6b;
-  --color-ink-faint: #999999;
-  --color-accent: #b8956a;
-  --color-accent-light: #d4b896;
-  --color-accent-ink: #2c2c2c;
-  --color-warn: #d4a574;
-  --color-danger: #c94a4a;
-
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui;
-
-  --radius-card: 16px;
+  --color-bg: #ffffff;           
+  --color-surface: #f9f9f9;      
+  --color-surface-2: #f0f0f0;   
+  --color-line: #e0e0e0;         
+  --color-ink: #1a1a1a;          
+  --color-ink-soft: #666666;     
+  --color-ink-faint: #999999;    
+  --color-accent: #000000;       
+  --color-accent-light: #333333; 
+  --color-accent-ink: #ffffff;   
+  --color-warn: #f59e0b;         
+  --color-danger: #ef4444;       
 }
 
 @layer base {
@@ -176,4 +170,10 @@
 
 @utility float-hover {
   animation: float 3s ease-in-out infinite;
+}
+
+@utility admin-card {
+  background: white;
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
 }

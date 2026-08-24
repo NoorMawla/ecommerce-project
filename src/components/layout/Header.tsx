@@ -1,69 +1,95 @@
 import Link from "next/link";
 import { getCategories } from "@/lib/queries/products";
-import { CartBadge } from "@/components/layout/CartBadge";
-import { AccountLink } from "@/components/layout/AccountLink";
 
 export async function Header() {
   const categories = await getCategories();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur-md shadow-sm transition-shadow duration-300">
-      <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6">
-      <Link href="/" className="font-display text-2xl font-bold tracking-tight text-ink hover:text-accent transition-colors duration-300 min-w-max">
-        VOLT<span className="text-accent">.</span>
-      </Link>
-        <nav aria-label="Main" className="hidden flex-1 lg:block">
-          <ul className="flex items-center gap-1 text-sm">
-            <li>
-              <Link
-                href="/products"
-                className="inline-flex min-h-11 items-center rounded-full px-3 text-ink-soft hover:bg-surface-2 hover:text-ink"
-              >
-                All products
-              </Link>
-            </li>
-            {categories.map((c) => (
-              <li key={c.id}>
+    <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur-sm">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Main header */}
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/" className="flex-shrink-0">
+            <div className="text-xl font-bold text-ink">
+              VOLT
+            </div>
+          </Link>
+
+          {/* Center Navigation - Desktop */}
+          <nav className="hidden lg:flex absolute left-1/2 transform -translate-x-1/2">
+            <ul className="flex items-center gap-8">
+              <li>
                 <Link
-                  href={`/categories/${c.slug}`}
-                  className="inline-flex min-h-11 items-center rounded-full px-3 text-ink-soft hover:bg-surface-2 hover:text-ink"
+                  href="/products"
+                  className="text-sm text-ink-soft hover:text-ink transition-colors duration-200"
                 >
-                  {c.name}
+                  All Products
                 </Link>
               </li>
-            ))}
-          </ul>
-        </nav>
+              {categories.slice(0, 3).map((c) => (
+                <li key={c.id}>
+                  <Link
+                    href={`/categories/${c.slug}`}
+                    className="text-sm text-ink-soft hover:text-ink transition-colors duration-200"
+                  >
+                    {c.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-        <div className="ml-auto flex items-center gap-1">
-          <AccountLink />
-          <CartBadge />
+          {/* Right section: Cart + Auth */}
+          <div className="flex items-center gap-4">
+            {/* Cart Icon - EMOJI VERSION */}
+            <Link
+              href="/cart"
+              className="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-surface transition-colors text-xl"
+              title="Shopping cart"
+            >
+              🛒
+            </Link>
+
+            {/* Auth Buttons */}
+            <div className="hidden sm:flex items-center gap-2">
+              <Link
+                href="/auth/signin"
+                className="px-4 py-2 text-sm font-medium text-ink-soft hover:text-ink transition-colors"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/auth/signup"
+                className="px-4 py-2 text-sm font-medium text-white bg-accent hover:bg-accent-light transition-colors rounded-lg"
+              >
+                Sign Up
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* Mobile category rail — horizontal scroll, never causes page overflow */}
-      <nav aria-label="Categories" className="lg:hidden">
-        <ul className="flex gap-2 overflow-x-auto px-4 pb-3 text-sm sm:px-6">
-          <li>
+        {/* Mobile Navigation */}
+        <nav aria-label="Categories" className="lg:hidden border-t border-line">
+          <div className="flex gap-4 overflow-x-auto px-0 py-3 text-sm">
             <Link
               href="/products"
-              className="inline-flex min-h-11 shrink-0 items-center rounded-full border border-line px-3 text-ink-soft"
+              className="flex-shrink-0 text-ink-soft hover:text-ink transition-colors"
             >
               All
             </Link>
-          </li>
-          {categories.map((c) => (
-            <li key={c.id}>
+            {categories.map((c) => (
               <Link
+                key={c.id}
                 href={`/categories/${c.slug}`}
-                className="inline-flex min-h-11 shrink-0 items-center rounded-full border border-line px-3 text-ink-soft"
+                className="flex-shrink-0 text-ink-soft hover:text-ink transition-colors"
               >
                 {c.name}
               </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+            ))}
+          </div>
+        </nav>
+      </div>
     </header>
   );
 }
