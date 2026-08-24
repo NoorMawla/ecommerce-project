@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 
 type Variant = "primary" | "outline" | "ghost" | "danger";
-type Size = "sm" | "md";
+type Size = "sm" | "md" | "lg";
 
 const base =
   "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-300 ease-out disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
@@ -17,6 +17,7 @@ const variants: Record<Variant, string> = {
 const sizes: Record<Size, string> = {
   sm: "min-h-10 px-4 text-sm",
   md: "min-h-12 px-7 text-base font-medium",
+  lg: "min-h-14 px-8 text-lg font-medium",
 };
 
 export function buttonClass(variant: Variant = "primary", size: Size = "md") {
