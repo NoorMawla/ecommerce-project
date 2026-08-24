@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import type { ReactNode } from "react";
+import { headers } from "next/headers";
+
 import "./globals.css";
 
 import AuthSessionProvider from "@/components/shared/SessionProvider";
@@ -24,29 +26,44 @@ export const metadata: Metadata = {
     template: "%s · VOLT",
   },
   description:
-    "Audio, mobile and laptop gear. Wireless headphones, chargers, docks and accessories with 12-month warranty and free shipping over $100.",
+    "Audio, mobile and laptop gear. Wireless headphones, chargers, docks and accessories.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: ReactNode;
 }) {
+  const requestHeaders = await headers();
+  const isAdminRoute = requestHeaders.get("x-admin-route") === "1";
+
   return (
     <html
       lang="en"
       className={`${inter.variable} ${spaceGrotesk.variable} h-full`}
     >
-      <body className="flex min-h-full flex-col overflow-x-hidden">
+      <body
+        className={`min-h-full overflow-x-hidden ${
+          isAdminRoute
+            ? "bg-[#f7f7f8]"
+            : "flex flex-col bg-white"
+        }`}
+      >
         <AuthSessionProvider>
           <CartProvider>
-            <Header />
+            {isAdminRoute ? (
+              children
+            ) : (
+              <>
+                <Header />
 
-            <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-12 sm:px-8 sm:py-16">
-              {children}
-            </main>
+                <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-12 sm:px-8 sm:py-16">
+                  {children}
+                </main>
 
-            <Footer />
+                <Footer />
+              </>
+            )}
           </CartProvider>
         </AuthSessionProvider>
       </body>
