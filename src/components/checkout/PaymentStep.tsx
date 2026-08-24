@@ -93,10 +93,11 @@ function PaymentFields({
   const elements = useElements();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [elementReady, setElementReady] = useState(false);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    if (!stripe || !elements) return;
+    if (!stripe || !elements || !elementReady) return;
 
     setSubmitting(true);
     setError(null);
@@ -136,7 +137,7 @@ function PaymentFields({
   return (
     <form onSubmit={handleSubmit} className="card space-y-4 p-5">
       <h2 className="text-base font-semibold">Payment</h2>
-      <PaymentElement />
+      <PaymentElement onReady={() => setElementReady(true)} />
 
       {error ? (
         <p role="alert" className="text-sm text-danger">
@@ -144,8 +145,16 @@ function PaymentFields({
         </p>
       ) : null}
 
-      <Button type="submit" className="w-full" disabled={!stripe || submitting}>
-        {submitting ? "Placing order…" : "Confirm and pay"}
+      <Button
+        type="submit"
+        className="w-full"
+        disabled={!stripe || !elementReady || submitting}
+      >
+        {submitting
+          ? "Placing order…"
+          : !elementReady
+            ? "Loading payment form…"
+            : "Confirm and pay"}
       </Button>
       <p className="text-xs text-ink-faint">
         Totals are recalculated on the server from database prices, and the
