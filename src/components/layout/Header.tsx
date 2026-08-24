@@ -40,8 +40,24 @@ export async function Header() {
             </ul>
           </nav>
 
-          {/* Right section: Cart + Auth */}
+          {/* Right section: Auth + Cart */}
           <div className="flex items-center gap-4">
+            {/* Auth Buttons */}
+            <div className="hidden sm:flex items-center gap-2">
+              <Link
+                href="/login"
+                className="px-4 py-2 text-sm font-medium text-ink-soft hover:text-ink transition-colors"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/register"
+                className="px-4 py-2 text-sm font-medium text-white bg-accent hover:bg-accent-light transition-colors rounded-lg"
+              >
+                Sign Up
+              </Link>
+            </div>
+
             {/* Cart Icon - EMOJI VERSION */}
             <Link
               href="/cart"
@@ -50,22 +66,6 @@ export async function Header() {
             >
               🛒
             </Link>
-
-            {/* Auth Buttons */}
-            <div className="hidden sm:flex items-center gap-2">
-              <Link
-                href="/auth/signin"
-                className="px-4 py-2 text-sm font-medium text-ink-soft hover:text-ink transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/auth/signup"
-                className="px-4 py-2 text-sm font-medium text-white bg-accent hover:bg-accent-light transition-colors rounded-lg"
-              >
-                Sign Up
-              </Link>
-            </div>
           </div>
         </div>
 
