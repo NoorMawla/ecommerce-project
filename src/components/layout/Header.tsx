@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { getCategories } from "@/lib/queries/products";
+import { AccountLink } from "@/components/layout/AccountLink";
+import { CartBadge } from "@/components/layout/CartBadge";
 
 export async function Header() {
   const categories = await getCategories();
@@ -42,30 +44,10 @@ export async function Header() {
 
           {/* Right section: Auth + Cart */}
           <div className="flex items-center gap-4">
-            {/* Auth Buttons */}
             <div className="hidden sm:flex items-center gap-2">
-              <Link
-                href="/login"
-                className="px-4 py-2 text-sm font-medium text-ink-soft hover:text-ink transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/register"
-                className="px-4 py-2 text-sm font-medium text-white bg-accent hover:bg-accent-light transition-colors rounded-lg"
-              >
-                Sign Up
-              </Link>
+              <AccountLink />
             </div>
-
-            {/* Cart Icon - EMOJI VERSION */}
-            <Link
-              href="/cart"
-              className="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-surface transition-colors text-xl"
-              title="Shopping cart"
-            >
-              🛒
-            </Link>
+            <CartBadge />
           </div>
         </div>
 

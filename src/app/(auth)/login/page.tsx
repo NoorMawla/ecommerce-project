@@ -1,6 +1,7 @@
 // src/app/(auth)/login/page.tsx
 "use client";
 
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useState } from "react";
@@ -65,6 +66,12 @@ function LoginForm() {
           Log in
         </button>
       </form>
+      <p className="mt-4 text-sm text-ink-soft">
+        No account?{" "}
+        <Link href="/register" className="font-medium text-accent hover:underline">
+          Sign up
+        </Link>
+      </p>
     </div>
   );
 }

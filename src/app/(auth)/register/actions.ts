@@ -3,7 +3,6 @@
 
 import { hash } from "bcryptjs";
 import { prisma } from "@/lib/db";
-import { redirect } from "next/navigation";
 
 export async function registerUser(formData: FormData) {
   const name = formData.get("name") as string;
@@ -24,6 +23,4 @@ export async function registerUser(formData: FormData) {
   await prisma.user.create({
     data: { name, email, password: hashedPassword },
   });
-
-  redirect("/login?registered=true");
 }
