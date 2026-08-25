@@ -63,6 +63,11 @@ type CreatePaymentIntentResult =
 export async function createPaymentIntent(
   items: CartLine[],
 ): Promise<CreatePaymentIntentResult> {
+  const session = await auth();
+  if (!session?.user) {
+    return { ok: false, error: "Please log in to check out." };
+  }
+
   const resolved = await resolveLines(items);
   if (!resolved.ok) return resolved;
 
@@ -89,6 +94,7 @@ type PlaceOrderResult =
 
 /**
  * Creates the order. Everything is verified server-side:
+ * - caller must be logged in (no guest checkout)
  * - shipping details re-validated
  * - prices and totals re-read from the database, never trusted from the client
  * - the Stripe PaymentIntent is retrieved and must show status "succeeded",
@@ -102,6 +108,11 @@ export async function placeOrder(input: {
   items: CartLine[];
   paymentIntentId: string;
 }): Promise<PlaceOrderResult> {
+  const session = await auth();
+  if (!session?.user) {
+    return { ok: false, error: "Please log in to check out." };
+  }
+
   const errors = validateCheckout(input.shipping);
   if (Object.keys(errors).length > 0) {
     return { ok: false, error: "Please correct the shipping details." };
@@ -135,12 +146,10 @@ export async function placeOrder(input: {
     return { ok: true, orderNumber: alreadyUsed.orderNumber };
   }
 
-  const session = await auth();
-
   const order = await prisma.$transaction(async (tx) => {
     const created = await tx.order.create({
       data: {
-        userId: session?.user?.id ?? null,
+        userId: session.user.id,
         fullName: input.shipping.fullName.trim(),
         email: input.shipping.email.trim(),
         phone: input.shipping.phone.trim(),
